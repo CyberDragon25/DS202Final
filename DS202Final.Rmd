@@ -15,16 +15,38 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r}
+# Read the dataset from the URL
+data <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data")
+
+# Check the structure of the dataset
+str(data)
+
 ```
 
-## Including Plots
+```{r}
+library(ggplot2)
+ggplot(data, aes(x = Bachelors, fill = X..50K)) +
+  geom_bar(position = "fill") +
+  labs(x = "Education Level", y = "Proportion", fill = "Income") +
+  theme_minimal()
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
+What is the average working hours per week for different income levels?
+
+```{r}
+aggregate(X40 ~ X..50K, data = data, mean)
+
+```
+
+```{r}
+data$Adm.clerical <- as.factor(data$Adm.clerical) # Ensuring the occupational data is treated as a categorical variable
+ggplot(data, aes(x = Adm.clerical, y = X77516, fill = Male)) +
+  geom_boxplot() +
+  labs(x = "Occupation", y = "Income") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
