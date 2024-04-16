@@ -1,6 +1,6 @@
 ---
 title: "DSFinal"
-author: "dhairya"
+author: "Dhairya, Varun, Siddhartha, Subham"
 date: "2024-04-16"
 output: html_document
 ---
