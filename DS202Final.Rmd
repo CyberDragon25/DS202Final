@@ -9,6 +9,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(treemap)
 library(ggplot2)
 ```
 
@@ -111,6 +112,45 @@ ggplot(data, aes(x = race, fill = sex)) +
   scale_fill_manual(values = custom_fill_colors) +
   theme_minimal() +
   theme(legend.position = "top")
+```
+
+```{}
+This bar chart shows a 
+```
+
+```{r}
+country_counts <- table(data$native_country)
+country_props <- prop.table(country_counts)
+other_countries <- names(country_props[country_props < 0.005 & names(country_props) != "United-States"])
+other_countries
+data$native_country_grouped <- ifelse(data$native_country %in% other_countries, "Other", data$native_country)
+
+ggplot(data, aes(x = "", fill = native_country_grouped)) +
+  geom_pie(width = 1) +
+  coord_polar(theta = "y") +  # Convert bars to pie slices
+  labs(title = "Distribution of Individuals by Native Country") +
+  theme_void()
+native_country_counts <- table(data$native_country)
+native_country_counts
+
+data <- data %>%
+  group_by(native_country) %>%
+  mutate(count_native_country = n())
+data$log_count_native_country <- log(data$count_native_country +1) * 100  # Adding 1 to handle cases where count is 0
+
+# Create a treemap
+treemap(data,
+        index = c("native_country"),
+        vSize = "log_count_native_country",
+        title = "Treemap of Native Country (Log Scale)",
+        palette = "Dark2",
+        border.col = "black",
+        border.lwds = 1,
+        fontsize.labels = 12,
+        fontcolor.labels = "black",
+        align.labels = c("left", "top"),
+        overlap.labels = 0,
+        inflate.labels = TRUE        )
 ```
 
 ```{r}
