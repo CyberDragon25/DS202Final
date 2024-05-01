@@ -97,6 +97,21 @@ ggplot(data, aes(x = age)) +
 ```         
 This bar plot is left skewed which shows that majority of the working population in ranging from 20 to 50. 
 ```
+```{r}
+#demographics of the working population
+custom_fill_colors <- c("Female" = "pink", "Male" = "lightblue")
+
+ggplot(data, aes(x = race, fill = sex)) +
+  geom_bar(position = "dodge", color = "black", alpha = 0.7) +
+  geom_text(aes(label = ..count..), stat = "count", position =
+                position_dodge(width = 0.9), vjust = -0.5) +
+  labs(title = "Demographic distribution based on Sex & Race",
+       x = "Race", y = "Count (log10)") +
+  scale_y_continuous(trans = "log10", labels = scales::comma_format()) +
+  scale_fill_manual(values = custom_fill_colors) +
+  theme_minimal() +
+  theme(legend.position = "top")
+```
 
 ```{r}
 #number of observations where income <=50K
