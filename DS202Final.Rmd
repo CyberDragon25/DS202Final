@@ -115,7 +115,7 @@ ggplot(data, aes(x = race, fill = sex)) +
 ```
 
 ```{}
-This bar chart shows a 
+This bar chart shows the demographic destribution of the population in the US. Most of the people are White with the second most being Black where the difference is more than 15000 in observations. Also the number of white men is more than double that of white women for this dataset. We cant exactly say that this would represent the actual population but it could also say that the mority  of the people who were observed were White.
 ```
 
 ```{r}
@@ -156,6 +156,53 @@ ggplot(data, aes(x = education, fill = income)) +
   theme(axis.text.x = element_text(angle =45,hjust=1))
 ```
 
-```         
+```{}         
 The above bar plot decribes the relation between Education Level and Income. The income values are of two type, <=50K and >50K. Majority of the population distribution has income less that 50K. percentage of population that has income <=50K is (24719/32560)*100 = 75.9%. However, from the bar plot we can see that as the level of education increases, the proportion of income shifts towards income levels greater than 50K. That is the ratio of >50K to <=50K increases. we can also see that for individuals with education level of Masters, Prof-school and Doctorate more than 50% of them have an income >50K. 
+```
+
+```{r}
+ggplot(data, aes(x=workclass,fill=income))+
+  geom_bar(position = "fill")+
+  labs(title = "Workclass V/S Income",x = "Workclass", y = "Proportion", fill = "Income")+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+```
+
+```{}
+From this graph we can see that majority of the people work in private sector. And majority of the people in the private sector earn less than 50k. Another analysis that we can do from this is that almost all workclass categories have more people earning less than 50K with the only exception of self employed. There are more people earning >50K.
+```
+
+```{r}
+ggplot(data, aes(x=maritial_status,fill=income))+
+  geom_bar(position = "fill")+
+  labs(title = "maritial status V/S Income",x = "maritial status", y = "Proportion", fill = "Income")+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+```
+```{r}
+ggplot(data, aes(x=relationship,fill=income))+
+  geom_bar(position = "fill")+
+  labs(title = "relationship V/S Income",x = "relationship", y = "Proportion", fill = "Income")+
+  theme(axis.text.x = element_text(angle=45,hjust=1))
+```
+
+```{}
+From these two graphs we can observe that families that are together have a better income proportion that is they generally earn much more than families that are seperated, divorced or widowed. Even the scenerio where they are married but spouse is absent shows that they have a worse proportion. 
+The data is observered to be consistant with the relationships column. Husbands and wives have a better proportion than any other. Also [Own - child] refers to individuals who have never married but have a child. Thus individuals with spouses have a better income.
+```
+
+```{r}
+# Create facetted plot with clearer labels
+ggplot(data, aes(x = occupation)) +
+  geom_bar() +
+  facet_wrap(~ race, labeller = as_labeller(toupper)) +  # Convert facet labels to uppercase
+  labs(
+    title = "Occupation Distribution by Race",
+    x = "Occupation",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
+    strip.text = element_text(size = 10, face = "bold")  # Increase font size and bold facet labels
+  )
+
 ```
