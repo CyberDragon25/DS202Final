@@ -220,5 +220,61 @@ for(race in unique(data$race)) {
   # Print the plot
   print(p)
 }
+```
 
+```{r}
+library(ggplot2)
+
+# Plotting
+ggplot(data, aes(x = sex, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Sex vs. Income",
+    x = "Sex",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    legend.position = "top"
+  )
+
+```
+
+Occupation vs. Income:
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Occupation vs. Income",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+
+```
+
+Native Country vs. Income
+```{r}
+# Plotting
+ggplot(data, aes(x = native_country, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Native Country vs. Income",
+    x = "Native Country",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
 ```
