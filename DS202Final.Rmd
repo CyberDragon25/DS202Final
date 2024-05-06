@@ -9,7 +9,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+
 library(treemap)
+
+
+
 library(ggplot2)
 ```
 
@@ -191,18 +195,209 @@ The data is observered to be consistant with the relationships column. Husbands 
 
 ```{r}
 # Create facetted plot with clearer labels
-ggplot(data, aes(x = occupation)) +
-  geom_bar() +
-  facet_wrap(~ race, labeller = as_labeller(toupper)) +  # Convert facet labels to uppercase
+library(ggplot2)
+
+# Assuming 'data' is your dataset
+# Loop through each unique race
+for(race in unique(data$race)) {
+  # Filter the data for one race at a time
+  race_data <- data[data$race == race, ]
+  
+  # Plotting
+  p <- ggplot(race_data, aes(x = occupation)) +
+    geom_bar() +
+    labs(
+      title = paste("Occupation Distribution for", toupper(race)),
+      x = "Occupation",
+      y = "Count"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
+      plot.title = element_text(size = 14, face = "bold")  # Bold and larger title
+    )
+  
+  # Print the plot
+  print(p)
+}
+```
+
+```{r}
+library(ggplot2)
+
+# Plotting
+ggplot(data, aes(x = sex, fill = income)) +
+  geom_bar(position = "fill") +
   labs(
-    title = "Occupation Distribution by Race",
-    x = "Occupation",
-    y = "Count"
+    title = "Sex vs. Income",
+    x = "Sex",
+    y = "Proportion",
+    fill = "Income"
   ) +
   theme_minimal() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
-    strip.text = element_text(size = 10, face = "bold")  # Increase font size and bold facet labels
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    legend.position = "top"
+  )
+
+```
+
+Occupation vs. Income:
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Occupation vs. Income",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+
+```
+
+Native Country vs. Income
+```{r}
+# Plotting
+ggplot(data, aes(x = native_country, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Native Country vs. Income",
+    x = "Native Country",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+Age Distribution by Income Level
+```{r}
+# Plotting
+ggplot(data, aes(x = age, fill = income)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Age Distribution by Income Level",
+    x = "Age",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+Education Level by Occupation
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = education)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Education Level by Occupation",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Education Level"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+Work Hours Distribution by Income Level
+```{r}
+# Plotting
+ggplot(data, aes(x = hours_per_week, fill = income)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Work Hours Distribution by Income Level",
+    x = "Hours per Week",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+
+Marital Status by Age
+```{r}
+# Plotting
+ggplot(data, aes(x = age, fill = maritial_status)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Marital Status by Age",
+    x = "Age",
+    y = "Proportion",
+    fill = "Marital Status"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+Race/Ethnicity vs. Education Level
+```{r}
+# Plotting
+ggplot(data, aes(x = education, fill = race)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Race/Ethnicity vs. Education Level",
+    x = "Education Level",
+    y = "Proportion",
+    fill = "Race/Ethnicity"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+Relationship Status by Occupation
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = relationship)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Relationship Status by Occupation",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Relationship Status"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+
+```
+
+Income Distribution by Native Country
+```{r}
+# Plotting
+ggplot(data, aes(x = native_country, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Income Distribution by Native Country",
+    x = "Native Country",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
   )
 
 ```
