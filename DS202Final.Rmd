@@ -194,10 +194,7 @@ The data is observered to be consistant with the relationships column. Husbands 
 ```
 
 ```{r}
-# Create facetted plot with clearer labels
-library(ggplot2)
 
-# Assuming 'data' is your dataset
 # Loop through each unique race
 for(race in unique(data$race)) {
   # Filter the data for one race at a time
