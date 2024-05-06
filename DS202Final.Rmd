@@ -222,6 +222,7 @@ for(race in unique(data$race)) {
 }
 ```
 
+Sex vs. Income
 ```{r}
 library(ggplot2)
 
