@@ -9,7 +9,11 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+
 library(treemap)
+
+
+
 library(ggplot2)
 ```
 
@@ -191,18 +195,30 @@ The data is observered to be consistant with the relationships column. Husbands 
 
 ```{r}
 # Create facetted plot with clearer labels
-ggplot(data, aes(x = occupation)) +
-  geom_bar() +
-  facet_wrap(~ race, labeller = as_labeller(toupper)) +  # Convert facet labels to uppercase
-  labs(
-    title = "Occupation Distribution by Race",
-    x = "Occupation",
-    y = "Count"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
-    strip.text = element_text(size = 10, face = "bold")  # Increase font size and bold facet labels
-  )
+library(ggplot2)
+
+# Assuming 'data' is your dataset
+# Loop through each unique race
+for(race in unique(data$race)) {
+  # Filter the data for one race at a time
+  race_data <- data[data$race == race, ]
+  
+  # Plotting
+  p <- ggplot(race_data, aes(x = occupation)) +
+    geom_bar() +
+    labs(
+      title = paste("Occupation Distribution for", toupper(race)),
+      x = "Occupation",
+      y = "Count"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),  # Rotate x-axis labels for better readability
+      plot.title = element_text(size = 14, face = "bold")  # Bold and larger title
+    )
+  
+  # Print the plot
+  print(p)
+}
 
 ```
