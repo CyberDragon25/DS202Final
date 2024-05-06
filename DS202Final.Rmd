@@ -119,7 +119,7 @@ ggplot(data, aes(x = race, fill = sex)) +
 ```
 
 ```{}
-This bar chart shows the demographic destribution of the population in the US. Most of the people are White with the second most being Black where the difference is more than 15000 in observations. Also the number of white men is more than double that of white women for this dataset. We cant exactly say that this would represent the actual population but it could also say that the mority  of the people who were observed were White.
+This bar chart shows the demographic destribution of the population in the US. Most of the people are White with the second most being Black where the difference is more than 15000 in observations. Also the number of white men is more than double that of white women for this dataset. We cant exactly say that this would represent the actual population but it could also say that the majority  of the people who were observed were White.
 ```
 
 ```{r}
@@ -194,10 +194,7 @@ The data is observered to be consistant with the relationships column. Husbands 
 ```
 
 ```{r}
-# Create facetted plot with clearer labels
-library(ggplot2)
 
-# Assuming 'data' is your dataset
 # Loop through each unique race
 for(race in unique(data$race)) {
   # Filter the data for one race at a time
@@ -402,3 +399,8 @@ ggplot(data, aes(x = native_country, fill = income)) +
   )
 
 ```
+
+sex vs income
+occupation vs income
+native country income
+
