@@ -278,3 +278,126 @@ ggplot(data, aes(x = native_country, fill = income)) +
     legend.position = "top"
   )
 ```
+
+Age Distribution by Income Level
+```{r}
+# Plotting
+ggplot(data, aes(x = age, fill = income)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Age Distribution by Income Level",
+    x = "Age",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+Education Level by Occupation
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = education)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Education Level by Occupation",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Education Level"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+Work Hours Distribution by Income Level
+```{r}
+# Plotting
+ggplot(data, aes(x = hours_per_week, fill = income)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Work Hours Distribution by Income Level",
+    x = "Hours per Week",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+
+Marital Status by Age
+```{r}
+# Plotting
+ggplot(data, aes(x = age, fill = maritial_status)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  labs(
+    title = "Marital Status by Age",
+    x = "Age",
+    y = "Proportion",
+    fill = "Marital Status"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+Race/Ethnicity vs. Education Level
+```{r}
+# Plotting
+ggplot(data, aes(x = education, fill = race)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Race/Ethnicity vs. Education Level",
+    x = "Education Level",
+    y = "Proportion",
+    fill = "Race/Ethnicity"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+Relationship Status by Occupation
+```{r}
+# Plotting
+ggplot(data, aes(x = occupation, fill = relationship)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Relationship Status by Occupation",
+    x = "Occupation",
+    y = "Proportion",
+    fill = "Relationship Status"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+
+```
+
+Income Distribution by Native Country
+```{r}
+# Plotting
+ggplot(data, aes(x = native_country, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Income Distribution by Native Country",
+    x = "Native Country",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+
+```
