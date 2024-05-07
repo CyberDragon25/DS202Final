@@ -76,7 +76,6 @@ relationship: represents what this individual is relative to others.
 race: Descriptions of an individual’s race
 sex: the sex of the individual
 capital_gain: capital gains for an individual
-capital_loss: capital loss for an individual
 hours_per_week: the hours an individual has reported to work per week
 native_country: country of origin for an individual
 income: if the income of that person is less than or greater than 50,000
@@ -103,13 +102,16 @@ ggplot(data, aes(x = age)) +
 This bar plot is left skewed which shows that majority of the working population in ranging from 20 to 50. 
 ```
 ```{r}
-#demographics of the working population
+# Reorder levels of race based on count
+data$race <- factor(data$race, levels = names(sort(table(data$race))))
+
+# Demographics of the working population
 custom_fill_colors <- c("Female" = "pink", "Male" = "lightblue")
 
 ggplot(data, aes(x = race, fill = sex)) +
   geom_bar(position = "dodge", color = "black", alpha = 0.7) +
   geom_text(aes(label = ..count..), stat = "count", position =
-                position_dodge(width = 0.9), vjust = -0.5) +
+              position_dodge(width = 0.9), vjust = -0.5) +
   labs(title = "Demographic distribution based on Sex & Race",
        x = "Race", y = "Count (log10)") +
   scale_y_continuous(trans = "log10", labels = scales::comma_format()) +
@@ -165,10 +167,16 @@ The above bar plot decribes the relation between Education Level and Income. The
 ```
 
 ```{r}
+# Reorder levels of workclass based on proportion of income >50K
+income_gt_50k_prop <- prop.table(table(data$workclass, data$income == ">50K"), margin = 1)[,2]
+data$workclass <- factor(data$workclass, levels = names(sort(income_gt_50k_prop)))
+
+# Graph with sorted bars
 ggplot(data, aes(x=workclass,fill=income))+
   geom_bar(position = "fill")+
   labs(title = "Workclass V/S Income",x = "Workclass", y = "Proportion", fill = "Income")+
   theme(axis.text.x = element_text(angle=45,hjust=1))
+
 ```
 
 ```{}
@@ -181,6 +189,7 @@ ggplot(data, aes(x=maritial_status,fill=income))+
   labs(title = "maritial status V/S Income",x = "maritial status", y = "Proportion", fill = "Income")+
   theme(axis.text.x = element_text(angle=45,hjust=1))
 ```
+
 ```{r}
 ggplot(data, aes(x=relationship,fill=income))+
   geom_bar(position = "fill")+
@@ -194,14 +203,13 @@ The data is observered to be consistant with the relationships column. Husbands 
 ```
 
 ```{r}
-
 # Loop through each unique race
 for(race in unique(data$race)) {
   # Filter the data for one race at a time
   race_data <- data[data$race == race, ]
   
   # Plotting
-  p <- ggplot(race_data, aes(x = occupation)) +
+  p <- ggplot(race_data, aes(x = reorder(occupation, occupation, FUN = function(x) x))) +
     geom_bar() +
     labs(
       title = paste("Occupation Distribution for", toupper(race)),
@@ -217,6 +225,7 @@ for(race in unique(data$race)) {
   # Print the plot
   print(p)
 }
+
 ```
 
 Sex vs. Income
