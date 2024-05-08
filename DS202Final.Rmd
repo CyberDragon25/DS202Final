@@ -1,5 +1,5 @@
 ---
-title: "DSFinal"
+title: "Analysis Of How Income Is Affected Based on Different Factors"
 author: "Dhairya, Varun, Siddhartha, Subham"
 output:
   html_document: default
@@ -162,6 +162,10 @@ treemap(data,
         inflate.labels = TRUE        )
 ```
 
+```{}
+The above treemap shows that the majority of the data was collected from United States althrough there was some data from other countries it was very minimal.
+```
+
 ```{r}
 #number of observations where income <=50K
 print(sum(data$income == "<=50K"))
@@ -244,6 +248,10 @@ for(race in unique(data$race)) {
 }
 ```
 
+```{}
+The graphs above depicting income disparities among different racial groups shed light on the occupational differences that exist within our society. Notably, the data reveals that certain occupations, such as craft repair and high-level positions, are predominantly held by White individuals. This trend reflects broader societal dynamics wherein White individuals often have greater access to high-paying and prestigious positions. Conversely, Pacific Islanders appear to have a higher representation in specialized careers, which may require advanced education and specialized skill sets. This observation underscores the importance of considering the intersectionality of race and education in understanding income disparities. While education can serve as a pathway to higher-paying occupations, systemic barriers may limit access to educational opportunities for marginalized racial groups, perpetuating income inequalities. Addressing these disparities in education and employment opportunities is essential for fostering greater equity and inclusivity within our workforce and society as a whole
+```
+
 Sex vs. Income
 ```{r}
 library(ggplot2)
@@ -265,6 +273,10 @@ ggplot(data, aes(x = sex, fill = income)) +
 
 ```
 
+```{}
+The graph comparing gender and pay reveals a significant disparity between sexes, echoing the pervasive issue of gender pay gap prevalent in society. This observation underscores the stark inequities in earnings based on gender, where women, on average, earn less than men for comparable work. Our analysis of the dataset corroborates this concerning trend, as evidenced by the pronounced discrepancy in income levels between male and female individuals. This gender pay gap not only highlights systemic inequalities but also underscores the importance of addressing gender-based discrimination and advocating for fair and equitable compensation practices in the workforce. By shedding light on this pressing issue, our data analysis contributes to the ongoing dialogue surrounding gender equality and the imperative for meaningful action to bridge the pay gap.
+```
+
 Occupation vs. Income:
 ```{r}
 # Plotting
@@ -282,6 +294,12 @@ ggplot(data, aes(x = occupation, fill = income)) +
     legend.position = "top"
   )
 
+```
+
+```{}
+The data comparing occupation and income highlights a clear trend wherein certain occupations, such as executive management or specialized professions, command higher income levels. This observation aligns with broader socioeconomic patterns, wherein individuals with advanced education and specialized skill sets tend to earn more. Indeed, our analysis underscores the pivotal role of education in determining income, as evidenced by the correlation between higher education levels and increased earnings. It's noteworthy that occupations like executive management typically require advanced degrees or extensive experience, reflecting the higher educational attainment associated with these roles.
+
+However, it's important to acknowledge the systemic barriers that exist in accessing education, particularly for marginalized groups. Our data underscores disparities in educational opportunities, with certain privileged groups, such as White individuals, having greater access to higher education. This disparity in educational attainment can further perpetuate income inequalities, as individuals from marginalized communities may face barriers to accessing high-paying occupations that require advanced degrees. Thus, while education can serve as a pathway to higher income, addressing systemic inequities in education access is crucial for promoting greater economic mobility and reducing income disparities across society.
 ```
 
 Native Country vs. Income
@@ -318,23 +336,14 @@ ggplot(data, aes(x = age, fill = income)) +
 
 ```
 
-Education Level by Occupation
-```{r}
-# Plotting
-ggplot(data, aes(x = occupation, fill = education)) +
-  geom_bar(position = "fill") +
-  labs(
-    title = "Education Level by Occupation",
-    x = "Occupation",
-    y = "Proportion",
-    fill = "Education Level"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
-  )
+```{}
+The graph illustrating age distribution versus income provides valuable insights into the dynamics of income across different age groups. It is evident that there is minimal to no income in the early years, which aligns with the typical trajectory of individuals entering the workforce after completing their education. As individuals progress through their careers and gain experience, we observe a gradual increase in income levels, peaking around age 50. This peak may be attributed to the accumulation of skills, experience, and career advancement opportunities that often accompany mid-career stages.
+
+However, it is noteworthy that income levels begin to decline after age 50, eventually stabilizing. This decline is likely influenced by various factors, including retirement or transition to part-time work as individuals approach retirement age. Additionally, factors such as health issues or caregiving responsibilities may also contribute to a decrease in income during later stages of one's career.
+
+The stabilization of income in later years, as indicated by the plateau in the graph, is indeed suggestive of individuals transitioning into retirement or relying on pension benefits. This underscores the importance of retirement planning and financial preparedness for individuals as they approach retirement age. Moreover, it highlights the need for policies and programs that support financial security and well-being for aging populations, ensuring a dignified and sustainable transition into retirement.
 ```
+
 
 Work Hours Distribution by Income Level
 ```{r}
@@ -350,6 +359,16 @@ ggplot(data, aes(x = hours_per_week, fill = income)) +
   theme_minimal() +
   theme(legend.position = "top")
 
+```
+
+```{}
+The graph depicting work hour distribution and its relationship with income reveals a discernible trend wherein increased work hours correspond to higher income levels. This pattern reflects the conventional understanding that individuals who work longer hours often have the opportunity to earn more through overtime pay or additional compensation. However, there comes a point where the incremental increase in income begins to plateau, regardless of the number of additional hours worked.
+
+This plateau in income suggests a saturation point beyond which further increases in work hours do not result in significant financial gains. One plausible explanation for this phenomenon is that individuals may reach a threshold where their productivity or earning potential becomes capped, regardless of their work hours. Moreover, factors such as work-life balance, burnout, and diminishing returns on effort may also contribute to the stabilization of income beyond a certain point.
+
+The stabilization of income at higher work hour levels parallels the findings observed in the age distribution graph, further underscoring the influence of retirement or pension on income dynamics. As individuals approach retirement age or transition into pension-supported lifestyles, they may opt for reduced work hours or retire altogether, leading to a stabilization of income levels.
+
+This insight highlights the importance of not only considering work hours as a determinant of income but also acknowledging the broader socio-economic factors that shape earning potentials and financial stability. It underscores the need for policies and practices that promote equitable access to opportunities and support sustainable work-life balance for individuals across different stages of their careers.
 ```
 
 
@@ -370,6 +389,16 @@ ggplot(data, aes(x = native_country, fill = income)) +
     legend.position = "top"
   )
 
+```
+
+```{}
+The analysis of income distribution among immigrants from various countries residing in the USA reveals interesting insights into the impact of national origin on financial outcomes. Among the immigrant population, individuals from France, India, Iran, and Taiwan emerge as the highest earners, indicating a notable disparity in income levels based on country of origin.
+
+This observation suggests that factors such as education, skill level, and economic opportunities in the home country may influence immigrants' earning potential in their adopted country. For instance, individuals migrating from countries with robust educational systems or thriving industries may possess valuable skills and qualifications that translate into higher-paying jobs in the USA.
+
+Moreover, cultural and social networks within immigrant communities may also play a role in facilitating access to employment opportunities and professional advancement, thereby contributing to variations in income levels among different immigrant groups.
+
+However, it's essential to recognize that income disparities among immigrant populations may also be influenced by systemic factors such as language barriers, discrimination, and immigration policies that impact access to education, employment, and social services
 ```
 
 Conclusions
