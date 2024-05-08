@@ -8,9 +8,9 @@ output:
 
 Introduction
 -----------------
-```
+
 We conducted an in-depth analysis of the 'Adult Census' dataset sourced from UC Irvine, which offers comprehensive information on adults primarily residing in the United States. This dataset encompasses a wide range of socio-demographic factors, including age, occupation, education, and income. Our primary objective is to investigate how these variables along with other socioeconomic factors individuals' income levels and occupational choices.
-```
+
 
 Data Cleaning And Variable Analysis
 -------------------------------------
@@ -27,7 +27,7 @@ library(treemap)
 library(ggplot2)
 ```
 
-```         
+```{}         
 DataSet origin: https://archive.ics.uci.edu/dataset/2/adult
 ```
 
@@ -69,10 +69,10 @@ data$education_num <- as.numeric(data$education_num)
 data$capital_gain <- as.numeric(data$capital_gain)
 data$capital_loss <- as.numeric(data$capital_loss)
 data$hours_per_week <- as.numeric(data$hours_per_week)
-
 ```
 
-```         
+
+```{}     
 The different paramters or variables are:
 
 age: the age of an individual
@@ -95,7 +95,7 @@ income: if the income of that person is less than or greater than 50,000
 summary(data)
 ```
 
-```         
+```{}      
 This shows that there are no missing values in the dataset, besides occupation,workclass and native_country which has certain missing values.
 ```
 
@@ -114,9 +114,10 @@ ggplot(data, aes(x = age)) +
   theme_minimal()
 ```
 
-```         
+```{}        
 This bar plot is left skewed which shows that majority of the working population in ranging from 20 to 50. 
 ```
+
 ```{r}
 # Reorder levels of race based on count
 data$race <- factor(data$race, levels = names(sort(table(data$race))))
@@ -189,15 +190,20 @@ The above bar plot decribes the relation between Education Level and Income. The
 ```{r}
 # Reorder levels of workclass based on proportion of income >50K
 income_gt_50k_prop <- prop.table(table(data$workclass, data$income == ">50K"), margin = 1)[,2]
-data$workclass <- factor(data$workclass, levels = names(sort(income_gt_50k_prop)))
 
-# Graph with sorted bars
-ggplot(data, aes(x=workclass,fill=income))+
-  geom_bar(position = "fill")+
-  labs(title = "Workclass V/S Income",x = "Workclass", y = "Proportion", fill = "Income")+
-  theme(axis.text.x = element_text(angle=45,hjust=1))
+# Sort these proportions and get the sorted names (workclasses)
+sorted_workclasses <- names(sort(income_gt_50k_prop))
 
+# Reorder the workclass factor in the data frame based on the sorted proportions
+data$workclass <- factor(data$workclass, levels = sorted_workclasses)
+
+# Create the bar graph using ggplot2
+ggplot(data, aes(x = workclass, fill = income == ">50K")) +
+  geom_bar(position = "fill") +
+  labs(title = "Workclass vs Income Proportion", x = "Workclass", y = "Proportion of Income >50K", fill = "Income Level") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
 
 ```{}
 From this graph we can see that majority of the people work in private sector. And majority of the people in the private sector earn less than 50k. Another analysis that we can do from this is that almost all workclass categories have more people earning less than 50K with the only exception of self employed. There are more people earning >50K.
@@ -222,12 +228,21 @@ From these two graphs we can observe that families that are together have a bett
 The data is observered to be consistant with the relationships column. Husbands and wives have a better proportion than any other. Also [Own - child] refers to individuals who have never married but have a child. Thus individuals with spouses have a better income.
 ```
 
-22
 ```{r}
 # Loop through each unique race
-for(race in unique(data$race)) {
+
+ for(race in unique(data$race)) {
   # Filter the data for one race at a time
   race_data <- data[data$race == race, ]
+  
+  # Calculate counts of each occupation within this subset
+  occupation_counts <- race_data %>%
+    group_by(occupation) %>%
+    summarise(count = n()) %>%
+    arrange(count)  # Arrange by count to determine the order
+  
+  # Reorder the occupation factor levels based on the sorted counts
+  race_data$occupation <- factor(race_data$occupation, levels = occupation_counts$occupation)
   
   # Plotting
   p <- ggplot(race_data, aes(x = occupation)) +
@@ -245,6 +260,7 @@ for(race in unique(data$race)) {
   
   # Print the plot
   print(p)
+  
 }
 ```
 
@@ -270,8 +286,8 @@ ggplot(data, aes(x = sex, fill = income)) +
     axis.text.x = element_text(angle = 0, hjust = 0.5),
     legend.position = "top"
   )
-
 ```
+
 
 ```{}
 The graph comparing gender and pay reveals a significant disparity between sexes, echoing the pervasive issue of gender pay gap prevalent in society. This observation underscores the stark inequities in earnings based on gender, where women, on average, earn less than men for comparable work. Our analysis of the dataset corroborates this concerning trend, as evidenced by the pronounced discrepancy in income levels between male and female individuals. This gender pay gap not only highlights systemic inequalities but also underscores the importance of addressing gender-based discrimination and advocating for fair and equitable compensation practices in the workforce. By shedding light on this pressing issue, our data analysis contributes to the ongoing dialogue surrounding gender equality and the imperative for meaningful action to bridge the pay gap.
@@ -280,21 +296,30 @@ The graph comparing gender and pay reveals a significant disparity between sexes
 Occupation vs. Income:
 ```{r}
 # Plotting
+occupation_income_proportions <- data %>%
+  group_by(occupation) %>%
+  summarise(Proportion = mean(income == ">50K")) %>%
+  arrange(Proportion)  # Sort occupations by the proportion of high income
+
+# Reorder the occupation factor in the data frame based on the sorted proportions
+data$occupation <- factor(data$occupation, levels = occupation_income_proportions$occupation)
+
+# Plotting with ggplot2
 ggplot(data, aes(x = occupation, fill = income)) +
-  geom_bar(position = "fill") +
+  geom_bar(position = "fill") +  # 'fill' stacks the bar to show proportions
   labs(
     title = "Occupation vs. Income",
     x = "Occupation",
     y = "Proportion",
     fill = "Income"
   ) +
-  theme_minimal() +
+  theme_minimal() +  # Minimalist theme
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Slant x-axis labels for better readability
+    legend.position = "top"  # Position the legend at the top
   )
-
 ```
+
 
 ```{}
 The data comparing occupation and income highlights a clear trend wherein certain occupations, such as executive management or specialized professions, command higher income levels. This observation aligns with broader socioeconomic patterns, wherein individuals with advanced education and specialized skill sets tend to earn more. Indeed, our analysis underscores the pivotal role of education in determining income, as evidenced by the correlation between higher education levels and increased earnings. It's noteworthy that occupations like executive management typically require advanced degrees or extensive experience, reflecting the higher educational attainment associated with these roles.
@@ -307,17 +332,37 @@ Age Distribution by Income Level
 ```{r}
 # Plotting
 ggplot(data, aes(x = age, fill = income)) +
-  geom_histogram(binwidth = 5, position = "fill", color = "black") +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +  # Histogram with 5-year bins
   labs(
     title = "Age Distribution by Income Level",
     x = "Age",
     y = "Proportion",
     fill = "Income"
   ) +
-  theme_minimal() +
-  theme(legend.position = "top")
+  theme_minimal() +  # Minimalist theme
+  theme(
+    legend.position = "top"  # Position the legend at the top
+  )
+
+# Plotting
+ggplot(data, aes(x = age, fill = income)) +
+  geom_histogram(binwidth = 5, position = "fill", color = "black") +  # Histogram with 5-year bins
+  geom_vline(xintercept = c(20, 40), linetype = "dashed", color = "red", size = 1) +  # Vertical lines at ages 20 and 40
+  geom_text(aes(x = 20, label = "Part Time"), y = 0.5, vjust = -0.5, color = "black", size = 3) +  # Label for age 20
+  geom_text(aes(x = 40, label = "Full Time"), y = 0.5, vjust = -0.5, color = "black", size = 3) +  # Label for age 40
+  labs(
+    title = "Age Distribution by Income Level",
+    x = "Age",
+    y = "Proportion",
+    fill = "Income"
+  ) +
+  theme_minimal() +  # Minimalist theme
+  theme(
+    legend.position = "top"  # Position the legend at the top
+  )
 
 ```
+
 
 ```{}
 The graph illustrating age distribution versus income provides valuable insights into the dynamics of income across different age groups. It is evident that there is minimal to no income in the early years, which aligns with the typical trajectory of individuals entering the workforce after completing their education. As individuals progress through their careers and gain experience, we observe a gradual increase in income levels, peaking around age 50. This peak may be attributed to the accumulation of skills, experience, and career advancement opportunities that often accompany mid-career stages.
@@ -341,8 +386,8 @@ ggplot(data, aes(x = hours_per_week, fill = income)) +
   ) +
   theme_minimal() +
   theme(legend.position = "top")
-
 ```
+
 
 ```{}
 The graph depicting work hour distribution and its relationship with income reveals a discernible trend wherein increased work hours correspond to higher income levels. This pattern reflects the conventional understanding that individuals who work longer hours often have the opportunity to earn more through overtime pay or additional compensation. However, there comes a point where the incremental increase in income begins to plateau, regardless of the number of additional hours worked.
@@ -355,24 +400,33 @@ This insight highlights the importance of not only considering work hours as a d
 ```
 
 
-# Income Distribution by Native Country
+Income Distribution by Native Country
 ```{r}
 # Plotting
+country_income_proportions <- data %>%
+  group_by(native_country) %>%
+  summarise(Proportion = mean(income == ">50K")) %>%  # Replace ">50K" as needed
+  arrange(Proportion)  # Sort countries by the proportion of higher income
+
+# Reorder the native_country factor in the data frame based on the sorted proportions
+data$native_country <- factor(data$native_country, levels = country_income_proportions$native_country)
+
+# Plotting with ggplot2
 ggplot(data, aes(x = native_country, fill = income)) +
-  geom_bar(position = "fill") +
+  geom_bar(position = "fill") +  # 'fill' stacks the bar to show proportions
   labs(
     title = "Income Distribution by Native Country",
     x = "Native Country",
     y = "Proportion",
     fill = "Income"
   ) +
-  theme_minimal() +
+  theme_minimal() +  # Minimalist theme
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Slant x-axis labels for better readability
+    legend.position = "top"  # Position the legend at the top
   )
-
 ```
+
 
 ```{}
 The analysis of income distribution among immigrants from various countries residing in the USA reveals interesting insights into the impact of national origin on financial outcomes. Among the immigrant population, individuals from France, India, Iran, and Taiwan emerge as the highest earners, indicating a notable disparity in income levels based on country of origin.
@@ -386,6 +440,6 @@ However, it's essential to recognize that income disparities among immigrant pop
 
 Conclusions
 -----------
-```
+```{}
 In conclusion, our analysis underscores the pivotal role of education in determining income levels, with disparities arising from varying educational requirements across occupations. Moreover, demographic distributions illuminate the intricate relationship between population dynamics and economic structures. Notably, marital stability emerges as a significant factor influencing individual income, as households with both spouses present tend to exhibit higher income proportions. Furthermore, our findings reveal distinct occupational preferences among different racial groups, underscoring the intersectionality of race and employment. Additionally, disparities in income among individuals of different countries of origin highlight broader societal factors impacting economic outcomes, despite shared access to education and resources within the same society. These insights emphasize the complex interplay of socioeconomic factors in shaping individuals' financial well-being and underscore the importance of addressing systemic inequalities to foster greater economic equity.
 ```
