@@ -6,13 +6,23 @@ output:
   pdf_document: default
 ---
 
+Introduction
+-----------------
+```
+We conducted an in-depth analysis of the 'Adult Census' dataset sourced from UC Irvine, which offers comprehensive information on adults primarily residing in the United States. This dataset encompasses a wide range of socio-demographic factors, including age, occupation, education, and income. Our primary objective is to investigate how these variables along with other socioeconomic factors individuals' income levels and occupational choices.
+```
+
+Data Cleaning And Variable Analysis
+-------------------------------------
+```{}
+Below we have cleaned and organised the dataset to enhance clarity and consistency within the dataset. We have renamed some of the columns, such as 'age', 'workclass', and 'education', aimed to improve readability and facilitate better understanding of the variables. Additionally, whitespace was trimmed from all textual data entries to ensure uniformity across the dataset. To address missing values, '?' entries were replaced with 'NA' for the 'workclass', 'occupation', and 'native_country' columns, thereby preparing the data for subsequent analysis. Furthermore, appropriate data type conversions were implemented, with categorical data transformed into factors and quantitative measures converted to numeric format.
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 
 library(treemap)
-
-
 
 library(ggplot2)
 ```
@@ -63,7 +73,7 @@ data$hours_per_week <- as.numeric(data$hours_per_week)
 ```
 
 ```         
-The paramters are:
+The different paramters or variables are:
 
 age: the age of an individual
 workclass: a general term to represent the employment status of an individual
@@ -87,6 +97,12 @@ summary(data)
 
 ```         
 This shows that there are no missing values in the dataset, besides occupation,workclass and native_country which has certain missing values.
+```
+
+Different Graphs and Analysis 
+------------------------------
+```{}
+Below is our analysis with different a variety of different graphical representations to elucidate the intricate relationships among different factors. We have created and analysed many differnt factors which include exploring demographic distributions to investigating the impact of education and occupation on income, each graph offers valuable insights into the dynamics of socioeconomic variables. By systematically analyzing these visualizations, we gain a deeper understanding of the underlying patterns and trends shaping individuals' work life and financial well-being. Moreover, these graphical representations enable us to communicate our findings effectively.
 ```
 
 ```{r}
@@ -202,6 +218,7 @@ From these two graphs we can observe that families that are together have a bett
 The data is observered to be consistant with the relationships column. Husbands and wives have a better proportion than any other. Also [Own - child] refers to individuals who have never married but have a child. Thus individuals with spouses have a better income.
 ```
 
+22
 ```{r}
 # Loop through each unique race
 for(race in unique(data$race)) {
@@ -209,7 +226,7 @@ for(race in unique(data$race)) {
   race_data <- data[data$race == race, ]
   
   # Plotting
-  p <- ggplot(race_data, aes(x = reorder(occupation, occupation, FUN = function(x) x))) +
+  p <- ggplot(race_data, aes(x = occupation)) +
     geom_bar() +
     labs(
       title = paste("Occupation Distribution for", toupper(race)),
@@ -225,7 +242,6 @@ for(race in unique(data$race)) {
   # Print the plot
   print(p)
 }
-
 ```
 
 Sex vs. Income
@@ -356,3 +372,8 @@ ggplot(data, aes(x = native_country, fill = income)) +
 
 ```
 
+Conclusions
+-----------
+```
+In conclusion, our analysis underscores the pivotal role of education in determining income levels, with disparities arising from varying educational requirements across occupations. Moreover, demographic distributions illuminate the intricate relationship between population dynamics and economic structures. Notably, marital stability emerges as a significant factor influencing individual income, as households with both spouses present tend to exhibit higher income proportions. Furthermore, our findings reveal distinct occupational preferences among different racial groups, underscoring the intersectionality of race and employment. Additionally, disparities in income among individuals of different countries of origin highlight broader societal factors impacting economic outcomes, despite shared access to education and resources within the same society. These insights emphasize the complex interplay of socioeconomic factors in shaping individuals' financial well-being and underscore the importance of addressing systemic inequalities to foster greater economic equity.
+```
