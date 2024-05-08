@@ -302,23 +302,6 @@ The data comparing occupation and income highlights a clear trend wherein certai
 However, it's important to acknowledge the systemic barriers that exist in accessing education, particularly for marginalized groups. Our data underscores disparities in educational opportunities, with certain privileged groups, such as White individuals, having greater access to higher education. This disparity in educational attainment can further perpetuate income inequalities, as individuals from marginalized communities may face barriers to accessing high-paying occupations that require advanced degrees. Thus, while education can serve as a pathway to higher income, addressing systemic inequities in education access is crucial for promoting greater economic mobility and reducing income disparities across society.
 ```
 
-Native Country vs. Income
-```{r}
-# Plotting
-ggplot(data, aes(x = native_country, fill = income)) +
-  geom_bar(position = "fill") +
-  labs(
-    title = "Native Country vs. Income",
-    x = "Native Country",
-    y = "Proportion",
-    fill = "Income"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
-  )
-```
 
 Age Distribution by Income Level
 ```{r}
